@@ -32,7 +32,26 @@ function webpackCommonConfigCreator(options) {
 				{
 					test: /\.(scss|sass)/,
 					include: path.resolve(__dirname, '../src'),
+					exclude: /\.module\.(sass|scss)$/,
 					use: [ 'style-loader', 'css-loader', 'sass-loader' ]
+				},
+				{
+					test: /\.module\.(sass|scss)$/,
+					include: path.resolve(__dirname, '../src'),
+					use: [
+						'style-loader',
+						{
+							loader: 'css-loader',
+							options: {
+								modules: {
+									mode: 'local',
+									localIdentName: '[path][name]_[local]--[hash:base64:5]'
+								},
+								localsConvention: 'camelCase'
+							}
+						},
+						'sass-loader'
+					]
 				}
 			]
 		},
