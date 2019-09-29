@@ -1,9 +1,12 @@
 const path = require('path');
-console.log('path', path.resolve(__dirname, '../build'));
-module.exports = {
-	entry: './src/index.js',
-	output: {
-		path: path.resolve(__dirname, '../build'),
-		filename: 'bundle.js'
-	}
-};
+function webpackCommonConfigCreator(options) {
+	return {
+		mode: options.mode, // 开发模式
+		entry: './src/index.js',
+		output: {
+			filename: 'bundle.js',
+			path: path.resolve(__dirname, '../build')
+		}
+	};
+}
+module.exports = webpackCommonConfigCreator;
