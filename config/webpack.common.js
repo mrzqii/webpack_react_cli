@@ -9,8 +9,26 @@ function webpackCommonConfigCreator(options) {
 			filename: 'bundle.js',
 			path: path.resolve(__dirname, '../build')
 		},
+		module: {
+			rules: [
+				{
+					test: /\.(js|jsx)$/,
+					include: path.resolve(__dirname, '../src'),
+					use: [
+						{
+							loader: 'babel-loader',
+							options: {
+								presets: [ '@babel/preset-react' ]
+							}
+						}
+					]
+				}
+			]
+		},
 		plugins: [
-			new HtmlWebpackPlugin(),
+			new HtmlWebpackPlugin({
+				template: path.resolve(__dirname, '../public/index.html') //配置插件使用我们定义的模板
+			}),
 			new CleanWebpackPlugin({
 				cleanOnceBeforeBuildPatterns: [
 					path.resolve(process.cwd(), 'build/'),

@@ -1,5 +1,5 @@
-console.log(12243);
-var ele = document.createElement('div');
-ele.innerHTML = 'hello !!!!!!!webpack';
+import React from 'react';
+import ReactDom from 'react-dom';
+import App from './App.js';
 
-document.body.appendChild(ele);
+ReactDom.render(<App />, document.getElementById('root'));
