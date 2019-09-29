@@ -15,6 +15,22 @@ function webpackCommonConfigCreator(options) {
 		module: {
 			rules: [
 				{
+					test: /\.(woff|woff2|eot|ttf|otf)$/,
+					use: [ 'file-loader' ]
+				},
+				{
+					test: /\.(jpg|png|svg|gif)$/,
+					use: [
+						{
+							loader: 'url-loader',
+							options: {
+								limit: 10240,
+								name: '[hash].[ext]'
+							}
+						}
+					]
+				},
+				{
 					test: /\.(js|jsx)$/,
 					include: path.resolve(__dirname, '../src'),
 					use: [
