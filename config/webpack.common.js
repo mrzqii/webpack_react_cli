@@ -18,7 +18,8 @@ function webpackCommonConfigCreator(options) {
 						{
 							loader: 'babel-loader',
 							options: {
-								presets: [ '@babel/preset-react' ]
+								presets: [ '@babel/preset-react' ],
+								plugins: [ 'react-hot-loader/babel' ] // 只是js和jsx修改会热更新
 							}
 						}
 					]

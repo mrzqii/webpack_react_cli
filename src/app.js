@@ -1,4 +1,6 @@
 import React from 'react';
-export default function App() {
+import { hot } from 'react-hot-loader/root';
+function App() {
 	return <div>hello world ~</div>;
 }
+export default hot(App);
