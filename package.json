@@ -1,11 +1,17 @@
 {
-  "name": "webpack_react-cli",
-  "version": "1.0.0",
-  "description": "react脚手架",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "mrzqii",
-  "license": "ISC"
+	"name": "webpack_react-cli",
+	"version": "1.0.0",
+	"description": "react脚手架",
+	"main": "index.js",
+	"scripts": {
+		"start": "node ./scripts/start.js",
+		"build": "node ./scripts/build.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "mrzqii",
+	"license": "ISC",
+	"devDependencies": {
+		"webpack": "^4.41.0",
+		"webpack-cli": "^3.3.9"
+	}
 }
