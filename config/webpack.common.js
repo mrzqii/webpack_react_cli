@@ -19,10 +19,20 @@ function webpackCommonConfigCreator(options) {
 							loader: 'babel-loader',
 							options: {
 								presets: [ '@babel/preset-react' ],
-								plugins: [ 'react-hot-loader/babel' ] // 只是js和jsx修改会热更新
+								plugins: [ 'react-hot-loader/babel' ]
 							}
 						}
 					]
+				},
+				{
+					test: /\.css/,
+					include: path.resolve(__dirname, '../src'),
+					use: [ 'style-loader', 'css-loader' ]
+				},
+				{
+					test: /\.(scss|sass)/,
+					include: path.resolve(__dirname, '../src'),
+					use: [ 'style-loader', 'css-loader', 'sass-loader' ]
 				}
 			]
 		},
