@@ -40,7 +40,18 @@ function webpackCommonConfigCreator(options) {
 								// publicPath: devMode ? './' : '../',   // 根据不同环境指定不同的publicPath
 							}
 						},
-						'css-loader'
+						'css-loader',
+						{
+							//  必须在package.json里面添加 browserslist 字段才会生效
+							loader: 'postcss-loader',
+							options: {
+								ident: 'postcss',
+								plugins: (loader) => [
+									require('postcss-import')({ root: loader.resourcePath }),
+									require('autoprefixer')()
+								]
+							}
+						}
 					]
 				},
 				{
@@ -60,6 +71,23 @@ function webpackCommonConfigCreator(options) {
 							}
 						},
 						'css-loader',
+						// {
+						// 	// 这个方式也是可以的 下面配置的方式也是可以的 但是必须在package.json里面添加 browserslist 字段才会生效
+						// 	loader: 'postcss-loader',
+						// 	options: {
+						// 		ident: 'postcss',
+						// 		plugins: (loader) => [
+						// 			require('postcss-import')({ root: loader.resourcePath }),
+						// 			require('autoprefixer')()
+						// 		]
+						// 	}
+						// },
+						{
+							loader: 'postcss-loader',
+							options: {
+								plugins: [ require('autoprefixer') /*在这里添加*/ ]
+							}
+						},
 						'sass-loader'
 					]
 				},
@@ -86,6 +114,17 @@ function webpackCommonConfigCreator(options) {
 									localIdentName: '[path][name]_[local]--[hash:base64:5]'
 								},
 								localsConvention: 'camelCase'
+							}
+						},
+						{
+							// 必须在package.json里面添加 browserslist 字段才会生效
+							loader: 'postcss-loader',
+							options: {
+								ident: 'postcss',
+								plugins: (loader) => [
+									require('postcss-import')({ root: loader.resourcePath }),
+									require('autoprefixer')()
+								]
 							}
 						},
 						'sass-loader'

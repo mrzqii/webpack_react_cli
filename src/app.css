@@ -1,4 +1,6 @@
 .css_class {
 	color: rgb(68, 167, 170);
-	font-size: 30px;
+	font-size: 50px;
+	display: flex;
+	transform: rotate(1deg);
 }
