@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 function webpackCommonConfigCreator(options) {
 	return {
 		mode: options.mode, // 开发模式
@@ -27,19 +28,56 @@ function webpackCommonConfigCreator(options) {
 				{
 					test: /\.css/,
 					include: path.resolve(__dirname, '../src'),
-					use: [ 'style-loader', 'css-loader' ]
+					use: [
+						{
+							loader: MiniCssExtractPlugin.loader,
+							options: {
+								// 这里可以指定一个 publicPath
+								// 默认使用 webpackOptions.output中的publicPath
+								// publicPath的配置，和plugins中设置的filename和chunkFilename的名字有关
+								// 如果打包后，background属性中的图片显示不出来，请检查publicPath的配置是否有误
+								publicPath: './'
+								// publicPath: devMode ? './' : '../',   // 根据不同环境指定不同的publicPath
+							}
+						},
+						'css-loader'
+					]
 				},
 				{
 					test: /\.(scss|sass)/,
 					include: path.resolve(__dirname, '../src'),
-					exclude: /\.module\.(sass|scss)$/,
-					use: [ 'style-loader', 'css-loader', 'sass-loader' ]
+					exclude: /\.module\.(sass|scss)$/, // 排除这些文件
+					use: [
+						{
+							loader: MiniCssExtractPlugin.loader,
+							options: {
+								// 这里可以指定一个 publicPath
+								// 默认使用 webpackOptions.output中的publicPath
+								// publicPath的配置，和plugins中设置的filename和chunkFilename的名字有关
+								// 如果打包后，background属性中的图片显示不出来，请检查publicPath的配置是否有误
+								publicPath: './'
+								// publicPath: devMode ? './' : '../',   // 根据不同环境指定不同的publicPath
+							}
+						},
+						'css-loader',
+						'sass-loader'
+					]
 				},
 				{
-					test: /\.module\.(sass|scss)$/,
+					test: /\.module\.(sass|scss)$/, // 这里只配置了sass支持module 如果需要css文件页支持 也可以配置
 					include: path.resolve(__dirname, '../src'),
 					use: [
-						'style-loader',
+						{
+							loader: MiniCssExtractPlugin.loader,
+							options: {
+								// 这里可以指定一个 publicPath
+								// 默认使用 webpackOptions.output中的publicPath
+								// publicPath的配置，和plugins中设置的filename和chunkFilename的名字有关
+								// 如果打包后，background属性中的图片显示不出来，请检查publicPath的配置是否有误
+								publicPath: './'
+								// publicPath: devMode ? './' : '../',   // 根据不同环境指定不同的publicPath
+							}
+						},
 						{
 							loader: 'css-loader',
 							options: {
@@ -64,6 +102,9 @@ function webpackCommonConfigCreator(options) {
 					path.resolve(process.cwd(), 'build/'),
 					path.resolve(process.cwd(), 'dist/')
 				]
+			}),
+			new MiniCssExtractPlugin({
+				filename: 'css/[name][hash].css'
 			})
 		]
 	};
