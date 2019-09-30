@@ -45,11 +45,45 @@ function webpackCommonConfigCreator(options) {
 							loader: 'babel-loader',
 							options: {
 								presets: [ '@babel/preset-react' ],
-								plugins: [ 'react-hot-loader/babel' ]
+								plugins: [
+									'react-hot-loader/babel'
+									// [ // antd按需加载的配置 有点问题 必须要css-loader的options里面importLoaders: 1 才能成功, 开发模式不行 待解决
+									// 	'import',
+									// 	{
+									// 		libraryName: 'antd',
+									// 		// libraryDirectory: 'es',
+									// 		style: 'css' // `style: true` 会加载 less 文件
+									// 	}
+									// ]
+								]
 							}
 						}
 					]
 				},
+				{
+					test: /\.css$/,
+					exclude: path.resolve(__dirname, '../src'), // 表示不是从src里面引入的css需要使用下面的方式
+					use: [
+						{
+							loader: 'style-loader',
+							options: { injectType: 'linkTag' } // 新版本（1.0.0 ）使用方式有点变化
+						},
+						{
+							loader: 'file-loader',
+							options: {
+								name: 'css/[name].css'
+							}
+						}
+						// { loader: 'style-loader' },
+						// {
+						// 	loader: 'css-loader',
+						// 	options: {
+						// 		importLoaders: 1
+						// 	}
+						// }
+					]
+				},
+
 				{
 					test: /\.css/,
 					include: path.resolve(__dirname, '../src'),
@@ -80,6 +114,39 @@ function webpackCommonConfigCreator(options) {
 								]
 							}
 						}
+					]
+				},
+				{
+					test: /\.less/,
+					include: path.resolve(__dirname, '../src'),
+					use: [
+						// 注意： use数组里面的元素不能是false
+						isEnvDevelopment
+							? 'style-loader'
+							: {
+									loader: MiniCssExtractPlugin.loader,
+									options: {
+										// 这里可以指定一个 publicPath
+										// 默认使用 webpackOptions.output中的publicPath
+										// publicPath的配置，和plugins中设置的filename和chunkFilename的名字有关
+										// 如果打包后，background属性中的图片显示不出来，请检查publicPath的配置是否有误
+										publicPath: './'
+										// publicPath: devMode ? './' : '../',   // 根据不同环境指定不同的publicPath
+									}
+								},
+						'css-loader',
+						{
+							//  必须在package.json里面添加 browserslist 字段才会生效
+							loader: 'postcss-loader',
+							options: {
+								ident: 'postcss',
+								plugins: (loader) => [
+									require('postcss-import')({ root: loader.resourcePath }),
+									require('autoprefixer')()
+								]
+							}
+						},
+						'less-loader'
 					]
 				},
 				{

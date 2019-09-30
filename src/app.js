@@ -3,9 +3,11 @@ import { hot } from 'react-hot-loader/root';
 import './app.css';
 import './app.scss';
 import './style/global.sass';
+import 'antd/dist/antd.css';
 import style from './app.module.scss';
 import img1 from './assets/small.png';
 import img2 from './assets/bigger.jpg';
+import { Button } from 'antd';
 function App() {
 	return (
 		<div>
@@ -23,6 +25,7 @@ function App() {
 			<div>
 				<i className="iconfont iconhandoup" style={{ color: 'red', fontSize: '16px' }} />
 			</div>
+			<Button type="primary"> tst</Button>
 		</div>
 	);
 }
