@@ -6,6 +6,9 @@ const config = {
 	devServer: {
 		contentBase: path.join(__dirname, '../dist'),
 		hot: true
+	},
+	output: {
+		filename: 'js/[name][hash].js'
 	}
 };
 

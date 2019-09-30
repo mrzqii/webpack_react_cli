@@ -23,7 +23,7 @@ function App() {
 				<img width="100px" src="./assets/timg.jpg" alt="" />
 			</div> */}
 			<div>
-				<i className="iconfont iconhandoup" style={{ color: 'red', fontSize: '16px' }} />
+				<i className="iconfont iconhandoup" style={{ color: 'red', fontSize: '16px' }} />111212
 			</div>
 			<Button type="primary"> tst</Button>
 		</div>

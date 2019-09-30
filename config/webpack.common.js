@@ -9,8 +9,16 @@ function webpackCommonConfigCreator(options) {
 		mode: options.mode, // 开发模式
 		entry: './src/index.js',
 		output: {
-			filename: 'js/bundle.js',
+			// filename: 'js/[name][hash].js',
+			// filename: 'js/bundle.js',
 			path: path.resolve(__dirname, '../build')
+		},
+		optimization: {
+			splitChunks: {
+				chunks: 'all',
+				minSize: 50000,
+				minChunks: 1
+			}
 		},
 		module: {
 			rules: [
