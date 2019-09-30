@@ -9,7 +9,8 @@ const config = {
 	},
 	output: {
 		filename: 'js/[name][hash].js'
-	}
+	},
+	devtool: 'inline-source-map'
 };
 
 const options = {
