@@ -1,32 +1,16 @@
-import React from 'react';
-import { hot } from 'react-hot-loader/root';
-import './app.css';
-import './app.scss';
-import './style/global.sass';
-import 'antd/dist/antd.css';
-import style from './app.module.scss';
-import img1 from './assets/small.png';
-import img2 from './assets/bigger.jpg';
-import { Button } from 'antd';
+import React from "react";
+import { hot } from "react-hot-loader/root";
+import Router from './page/router'
+import "./style/global.less";
+import Provider from './store/index.js'
+// polyfill only stable `core-js` features - ES and web standards:
+import 'core-js/stable';
+import 'regenerator-runtime/runtime'; //生成器函数、async、await函数
 function App() {
-	return (
-		<div>
-			<div className="css_class">hello world ~</div>
-			<div className="scss_class">scss_class ~</div>
-			<div className={style.scss_module}>scss_class ~</div>
-			<div>
-				<img src={img1} alt="" />
-				<img width="100px" src={img2} alt="" />
-			</div>
-			{/* <div>
-				<img src="./assets/loading.png" alt="" />
-				<img width="100px" src="./assets/timg.jpg" alt="" />
-			</div> */}
-			<div>
-				<i className="iconfont iconhandoup" style={{ color: 'red', fontSize: '16px' }} />111212
-			</div>
-			<Button type="primary"> tst</Button>
-		</div>
-	);
+  return (
+    <Provider>
+      <Router/>
+    </Provider>
+  );
 }
 export default hot(App);
