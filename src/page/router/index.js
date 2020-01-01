@@ -10,9 +10,11 @@ const Home = loadable(() => import(/* webpackChunkName: "home" */'../home/index.
 
 const TAnimation = loadable(() => import(/* webpackChunkName: "animation" */'../tanimation/index.js'))
 const TContexttest = loadable(() => import(/* webpackChunkName: "animation" */'../context/index.js'))
-const Tsuiyi = loadable(() => import(/* webpackChunkName: "animation" */'../suiyi/index.js'))
- 
- 
+const Tredux = loadable(() => import(/* webpackChunkName: "animation" */'../redux/index.js'))
+const TDragCom = loadable(() => import(/* webpackChunkName: "animation" */'../drag/index.js'))
+const TGrid = loadable(() => import(/* webpackChunkName: "animation" */'../grid/index.js'))
+
+
 
 const BasicRoute = () => (
     <HashRouter>
@@ -21,8 +23,10 @@ const BasicRoute = () => (
             <Route path="/contexttest" exact component={TContexttest}/>
             <Route path="/login" component={Login}/>
             <Route path="/animation" component={TAnimation}/>
-            <Route path="/suiyi" component={Tsuiyi}/>
-            <Route 
+            <Route path="/redux" component={Tredux}/>
+            <Route path="/drag" component={TDragCom}/>
+            <Route path="/grid" component={TGrid}/>
+            <Route
                 path="/main"
                 render={()=>(
                     <Layout>

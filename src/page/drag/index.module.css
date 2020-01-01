@@ -1,0 +1,19 @@
+.item {
+  width: 200px;
+  height: 200px;
+  border: 1px solid #333;
+  margin-top: 100px
+}
+.unChooseUserBox {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.unChooseUser{
+  width: 49%;
+  border: 1px solid #111
+}
+
+.active {
+  background: rgba(0,0,0,.6)
+}

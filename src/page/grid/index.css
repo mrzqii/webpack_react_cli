@@ -1,0 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 200px auto;
+  grid-template-rows: 1fr 1fr 1fr;
+  height: 50vh
+}
+
+.item-1 {
+  background: #008000;
+}
+
+.item-2 {
+  background: #808080;
+}
+
+.item-3 {
+  background: gold;
+}
+
+.item-4 {
+  background: pink;
+}
+
+.item-5 {
+  background: yellow;
+}
+
+.item-6 {
+  background: #ffd700;
+}

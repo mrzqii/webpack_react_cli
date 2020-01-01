@@ -7,11 +7,13 @@ const webpack = require("webpack");
 const webpackbar = require("webpackbar"); // 进度条
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
+
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 function webpackCommonConfigCreator() {
   const PUBLIC_PATH = "/"; //表示资源的发布地址
   return {
     mode: "development", // 开发模式
-    entry: "./src/index.js",
+    entry: ["./src/index.js"],
     output: {
       filename: "js/[name][hash].js",
       path: path.resolve(__dirname, "../build"),
@@ -22,7 +24,7 @@ function webpackCommonConfigCreator() {
         chunks: "all"
       }
     },
-    devtool: "inline-source-map", // 报错的时候可以显示在源文件的哪个位置 如果注释掉，报错的时候会显示编译后的代码 不好调试，也可试一试eval-source-map
+    devtool: "cheap-module-eval-source-map",
     module: {
       rules: [
         {
@@ -155,6 +157,8 @@ function webpackCommonConfigCreator() {
       ]
     },
     plugins: [
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.NoEmitOnErrorsPlugin(),
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, "../public/index.html") //配置插件使用我们定义的模板
       }),
@@ -192,10 +196,10 @@ function webpackCommonConfigCreator() {
           {
             loader: "babel-loader",
             options: {
+              cacheDirectory: true, // 用于缓存加载器的结果 优化编译速度
               // presets: ['@babel/preset-react'],
               presets: ["@babel/preset-env", "@babel/preset-react"],
               plugins: [
-                "react-hot-loader/babel",
                 "@babel/plugin-proposal-class-properties",
                 [
                   // antd按需加载的配置 有点问题 必须要css-loader的options里面importLoaders: 1 才能成功, 开发模式不行 待解决
@@ -210,20 +214,27 @@ function webpackCommonConfigCreator() {
             }
           }
         ]
-      })
+      }),
+      new CopyWebpackPlugin([
+        {
+          from: path.resolve(process.cwd(), "public"),
+          to: "./",
+          ignore: ["index.html"]
+        }
+      ])
       // new BundleAnalyzerPlugin(
-      // 	{
-      // 		analyzerMode: 'server',
-      // 		analyzerHost: '127.0.0.1',
-      // 		analyzerPort: 8889,
-      // 		reportFilename: 'report.html',
-      // 		defaultSizes: 'parsed',
-      // 		openAnalyzer: true,
-      // 		generateStatsFile: false,
-      // 		statsFilename: 'stats.json',
-      // 		statsOptions: null,
-      // 		logLevel: 'info'
-      // 	}
+      //   {
+      //     analyzerMode: 'server',
+      //     analyzerHost: '127.0.0.1',
+      //     analyzerPort: 8889,
+      //     reportFilename: 'report.html',
+      //     defaultSizes: 'parsed',
+      //     openAnalyzer: true,
+      //     generateStatsFile: false,
+      //     statsFilename: 'stats.json',
+      //     statsOptions: null,
+      //     logLevel: 'info'
+      //   }
       // )
     ],
     resolve: {

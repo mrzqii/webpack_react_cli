@@ -1,0 +1,275 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <style>
+      /* .jwplayer .jw-icon-barlogo-new:before {
+      content: none;
+    }
+    .jw-icon-barlogo-new {
+      background: url("./baidu/logo.png") no-repeat;
+      background-position: center;
+    } */
+      #playercontainer {
+        margin: 0 auto;
+        max-width: 100%;
+      }
+      #playercontainer .jw-adv,
+      .jw-preview {
+        background-color: transparent;
+      }
+    </style>
+
+    <style>
+        body{
+            margin:0;
+            padding:0;
+        }
+        #myPlayer{
+          position: fixed;
+          width: 100%;
+          height: 100%;
+        }
+        .control-direction{
+            opacity: 0.7;
+            position: fixed;
+            left: 20px;
+            top:20px;
+            width:39px;
+            height: 39px;
+            /*border: 1px solid red;*/
+            cursor: pointer;
+            background: url("/video/setting.svg") no-repeat center;
+        }
+        .control-direction-content{
+            opacity: 0.7;
+            display: none;
+            position: fixed;
+            left: 20px;
+            top:70px;
+            width:124px;
+            height: 124px;
+            border-radius: 50%;
+            background: rgba(194, 50, 50, 0.5);
+        }
+
+        .control-direction-content span{
+            width:16px;
+            height: 16px;
+            display: inline-block;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            position: relative !important;
+            cursor: pointer;
+        }
+
+        .control-direction-content span.top{
+            background: url("/video/up.svg");
+            left: 54px;
+            top: 11px;
+        }
+        .control-direction-content span.right{
+            background: url("/video/right.svg");
+            right: 10px;
+            top: 54px;
+            float: right;
+        }
+        .control-direction-content span.bottom{
+            background: url("/video/down.svg");
+            left: 33px;
+            bottom: -96px;
+        }
+        .control-direction-content span.left{
+            background: url("/video/left.svg");
+            left: -30px;
+            top: 54px;
+        }
+
+        .control-zoom-in{
+            opacity: 0.7;
+            position: fixed;
+            left: 63px;
+            top:20px;
+            width:39px;
+            height: 39px;
+            /*border: 1px solid red;*/
+            cursor: pointer;
+            background-image: url("/video/minus-circle-fill.svg");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .control-zoom-out{
+            opacity: 0.7;
+            position: fixed;
+            left: 106px;
+            top:20px;
+            width:39px;
+            height: 39px;
+            /*border: 1px solid red;*/
+            cursor: pointer;
+            background-image: url("/video/plus-circle-fill.svg");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    </style>
+
+  </head>
+
+  <body>
+    <main><div id="playercontainer"></div></main>
+    <div class="control-direction"></div>
+    <div class="control-zoom-in"></div>
+    <div class="control-zoom-out"></div>
+    <div class="control-direction-content">
+        <span class="top"></span>
+        <span class="right"></span>
+        <span class="bottom"></span>
+        <span class="left"></span>
+    </div>
+    <script src="/video/jquery.min.js"></script>
+    <script type="text/javascript" src="/video/cyberplayer.js"></script>
+    <script type="text/javascript">
+
+      let BaseUrl = window.parent.IP;
+
+
+      /**
+       * [通过参数名获取url中的参数值]
+       * 示例URL:http://htmlJsTest/getrequest.html?uid=admin&rid=1&fid=2&name=小明
+       * @param  {[string]} queryName [参数名]
+       * @return {[string]}           [参数值]
+       */
+      function GetQueryValue(queryName) {
+          var query = decodeURI(window.location.search.substring(1));
+          var vars = query.split("&");
+          for (var i = 0; i < vars.length; i++) {
+              var pair = vars[i].split("=");
+              if (pair[0] == queryName) { return pair[1]; }
+          }
+          return null;
+      }
+
+      var url=GetQueryValue("url")
+      var width=GetQueryValue("width")
+      var height=GetQueryValue("height")
+      var guid=GetQueryValue("guid")
+
+
+
+      // api https://cloud.baidu.com/doc/MCT/WebSDKAPI.html#cyberplayer.3A.3AgetPlaylist
+      var player = cyberplayer("playercontainer").setup({
+        width: width||600,
+        height: height||300,
+        file: url, // <—rtmp直播地址
+        // fallbackfile: "https://hwzbfee.yunshicloud.com/x7px03/x7px03/yh9zk3/y8kawn/g5181v.m3u8", // <— 备用播放地址，为了手机上能进行直播
+        autostart: true,
+        stretching: "uniform",
+        volume: 100,
+        controls: true,
+        controlbar: {
+          barLogo: false, // 不显示logo
+          barLogoUrl: "http://www.darongshutech.com/",
+          canDrag: true
+        },
+        rtmp: {
+          reconnecttime: 5, // rtmp直播的重连次数
+          bufferlength: 1 // 缓冲多少秒之后开始播放 默认1秒
+        },
+        imageAdvs: {
+          // 图片广告，低版本IE不支持
+          // start: {
+          //   // 开场广告
+          //   image: "https://img.sqydt.darongshutech.com/image_201811211205514797.png", // 广告图片地址
+          //   url: "https://cloud.baidu.com/product/vod.html", // 跳转url
+          //   time: 10 // 播放时长，单位：s
+          // },
+          // pause: {
+          //   // 暂停广告
+          //   image: "https://img.sqydt.darongshutech.com/image_201811211205514797.png",
+          //   url: "https://cloud.baidu.com/product/lss.html"
+          // },
+          // end: {
+          //   // 结束广告
+          //   image: "https://img.sqydt.darongshutech.com/image_201811211205514797.png",
+          //   url: "https://cloud.baidu.com/solution/video_ai.html"
+          // }
+        },
+        ak: "7bb98f113f65474db6ebbd23029796c6" // 公有云平台注册即可获得accessKey
+      });
+      function direction(n) {
+        $.ajax({
+            type: "GET",
+            url: BaseUrl+"/hbxt/core/videoinfo/ControlCloud.ht?guid=" + guid + "&direction=" + n,
+            dataType: 'JSON',
+            success: function(data) {}
+        });
+    }
+
+    function stop() {
+        $.ajax({
+            type: "GET",
+            url: BaseUrl+"/hbxt/core/videoinfo/StopCloud.ht?guid=" + guid,
+            dataType: 'JSON',
+            success: function(data) {}
+        });
+    }
+
+    $(".control-direction").click(function() {
+        $(".control-direction-content").toggle();
+    });
+
+    // 上
+    $(".top").mousedown(function() {
+        direction(0);
+    });
+
+    $(".top").mouseup(function() {
+        stop();
+    });
+    // 右
+    $(".right").mousedown(function() {
+        direction(3);
+    });
+
+    $(".right").mouseup(function() {
+        stop();
+    });
+
+    // 下
+    $(".bottom").mousedown(function() {
+        direction(1);
+    });
+
+    $(".bottom").mouseup(function() {
+        stop();
+    });
+
+    // 左
+    $(".left").mousedown(function() {
+        direction(2);
+    });
+
+    $(".left").mouseup(function() {
+        stop();
+    });
+
+    //放大
+    $(".control-zoom-in").mousedown(function() {
+        direction(8);
+    });
+
+    $(".control-zoom-in").mouseup(function() {
+        stop();
+    });
+
+    //缩小
+    $(".control-zoom-out").mousedown(function() {
+        direction(9);
+    });
+
+    $(".control-zoom-out").mouseup(function() {
+        stop();
+    });
+
+    </script>
+  </body>
+</html>

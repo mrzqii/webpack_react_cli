@@ -10,12 +10,15 @@ const safePostCssParser = require("postcss-safe-parser"); // 查找并修复 CSS
 const webpackbar = require("webpackbar"); // 进度条
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
+
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 function webpackCommonConfigCreator() {
   /**
    * 基础路径
-   * 比如我上传到自己的服务器填写的是："/work/pwa/"，最终访问为"https://test.com/work/pwa/"
+   * 比如我上传到自己的服务器填写的是："/work/pwa/"，最终访问为"https://isluo.com/work/pwa/"
    * 根据你自己的需求填写
-   * "/" 就是根路径，假如最终项目上线的地址为：https://test.com/， 那就可以直接写"/"
+   * "/" 就是根路径，假如最终项目上线的地址为：https://isluo.com/， 那就可以直接写"/"
    * **/
   const PUBLIC_PATH = "/"; //表示资源的发布地址
 
@@ -29,11 +32,18 @@ function webpackCommonConfigCreator() {
       publicPath: PUBLIC_PATH // 在生成的html中
     },
     optimization: {
+      minimizer: [
+        // 代码压缩优化
+        new TerserPlugin({
+          cache: true, // 开启缓存
+          parallel: true // 多线程
+        })
+      ],
       splitChunks: {
         chunks: "all"
       }
     },
-    devtool: "source-map",
+    // devtool: "source-map",
     module: {
       rules: [
         {
@@ -77,10 +87,10 @@ function webpackCommonConfigCreator() {
             {
               loader: "babel-loader",
               options: {
-                presets: ["@babel/preset-react"],
-                // presets: ['@babel/preset-env", "@babel/preset-react'],
+                cacheDirectory: true, // 用于缓存加载器的结果 优化编译速度
+                // presets: ["@babel/preset-react"],
+                presets: ["@babel/preset-env", "@babel/preset-react"],
                 plugins: [
-                  "react-hot-loader/babel",
                   "@babel/plugin-proposal-class-properties",
                   [
                     // antd按需加载的配置 有点问题 必须要css-loader的options里面importLoaders: 1 才能成功, 开发模式不行 待解决
@@ -107,7 +117,7 @@ function webpackCommonConfigCreator() {
             {
               loader: "file-loader",
               options: {
-                name: "css/[name][hash].css"
+                name: "css/[name][contenthash].css"
               }
             }
           ]
@@ -210,8 +220,14 @@ function webpackCommonConfigCreator() {
           map: false
         }
       }),
-      new ManifestPlugin()
-      // 代码打包分析
+      new ManifestPlugin(),
+      new CopyWebpackPlugin([
+        {
+          from: path.resolve(process.cwd(), "public"),
+          to: "./",
+          ignore: ["index.html"]
+        }
+      ])
       // new BundleAnalyzerPlugin({
       //   analyzerMode: "server",
       //   analyzerHost: "127.0.0.1",

@@ -11,8 +11,14 @@ export class Home extends Component {
                <NavLink className="btn" to="/contexttest">
                    context上下文
                </NavLink>
-               <NavLink className="btn" to="/suiyi">
+               <NavLink className="btn" to="/redux">
                    随便写
+               </NavLink>
+               <NavLink className="btn" to="/drag">
+                   拖拽
+               </NavLink>
+               <NavLink className="btn" to="/grid">
+                   Grid布局
                </NavLink>
             </div>
         );

@@ -1,0 +1,18 @@
+.test:active {
+  animation: ttt 1s
+}
+@keyframes ttt {
+  0% { background: #c00; }
+  50% { background: orange; }
+  100% { background: yellowgreen; }
+}
+
+.ttttttt {
+  font-size: 50px;
+  font-weight: 600;
+  padding: 20px;
+  color: transparent;                             /* 将iconfont的颜色改为透明 */
+  -webkit-background-clip: text;                  /* 将背景图的绘画仅作用在文字上 */
+  background-image: linear-gradient(225deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);     /* 你的渐变色 */
+
+}
